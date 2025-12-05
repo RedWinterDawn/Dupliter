@@ -12,11 +12,12 @@
     margin: 0;
     background: black;
     overflow: hidden;
-    color: #f4f4f4;
+    color: #ffffff;
     font-family: "Georgia", serif;
+    font-weight: 600;
   }
 
-  /* --- STARFIELD --- */
+  /* --- ANIMATED STARFIELD --- */
   #stars {
     position: fixed;
     top: 0;
@@ -34,6 +35,16 @@
     background: white;
     opacity: 0.4;
     border-radius: 50%;
+    animation: drift linear infinite;
+  }
+
+  @keyframes drift {
+    0% {
+      transform: translateY(0px) translateX(0px);
+    }
+    100% {
+      transform: translateY(100vh) translateX(50px);
+    }
   }
 
   /* --- CONTENT AREA --- */
@@ -41,20 +52,28 @@
     position: relative;
     z-index: 5;
     max-width: 880px;
-    padding: 60px;
-    line-height: 1.65;
+    padding: 40px 60px;
+    line-height: 1.6;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
   #container {
     position: relative;
-    font-size: 20px;
+    font-size: 18px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    flex: 1;
+    overflow: hidden;
   }
 
   /* --- LETTER EFFECTS --- */
   .letter {
     opacity: 0;
     transition: opacity 1.8s ease;
-    display: inline-block;
+    display: inline;
   }
 
   .letter.visible {
@@ -65,29 +84,23 @@
     opacity: 0.25;
   }
 
-  /* --- BALL WITH SPACETIME WARP --- */
-  #ball {
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    background: radial-gradient(circle, #ffe28a, #ffb300);
-    border-radius: 50%;
-    box-shadow:
-      0 0 12px #ffcc66,
-      0 0 25px rgba(255, 200, 60, 0.45),
-      0 0 45px rgba(255, 180, 40, 0.25);
-    filter: blur(0.3px);
-
-    /* spacetime warp: subtle refraction ring */
-    outline: 18px solid rgba(255, 230, 120, 0.05);
-    outline-offset: -10px;
-  }
-
-  /* LaTeX block centered */
+  /* --- EQUATION AT END --- */
   .equation {
     text-align: center;
-    margin: 40px 0;
-    font-size: 26px;
+    margin: 20px 0 0 0;
+    font-size: 20px;
+    color: #ffffff;
+    opacity: 0;
+    transition: opacity 1.8s ease;
+  }
+
+  .equation.visible {
+    opacity: 1;
+  }
+
+  h1 {
+    color: #ffffff;
+    margin-bottom: 30px;
   }
 </style>
 </head>
@@ -99,72 +112,50 @@
 
 <h1>Dupliter</h1>
 
+<div id="container"></div>
+
 <div class="equation">
-  <!-- LaTeX for your Dupliter Equation -->
+  <!-- LaTeX for Dupliter Equation -->
   $$\frac{KE_{rel}}{KE_{classical}} =
     2 \cdot \frac{\left(\frac{1}{\sqrt{1 - v^2/c^2}} - 1\right)}
     {v^2/c^2}$$
 </div>
 
-<div id="container"></div>
-<div id="ball"></div>
-
 </div>
 
 <script>
-/* --- STARFIELD GENERATION (light, minimal) --- */
+/* --- ANIMATED STARFIELD --- */
 const starLayer = document.getElementById("stars");
 for (let i = 0; i < 90; i++) {
   let s = document.createElement("div");
   s.classList.add("star");
   s.style.left = Math.random() * 100 + "%";
-  s.style.top = Math.random() * 100 + "%";
+  s.style.top = (Math.random() * 100 - 100) + "%";
   s.style.opacity = (Math.random() * 0.6 + 0.2);
+  const duration = (Math.random() * 15 + 20) + "s";
+  s.style.animationDuration = duration;
+  s.style.animationDelay = (Math.random() * -20) + "s";
   starLayer.appendChild(s);
 }
 
-/* --- DUPLITER TEXT --- */
-const dupliterText = `
-What is the Dupliter?
-This Dupliter is a speculative framework for
-stabilizing nonlinear time travel through gravitational
-interactions with a theoretical duplicate of Jupiter. The hypothesis
-posits that temporal displacement becomes feasible when
-dark matter potential energy in galactic
-halo outskirts is harnessed, enabling the Milky
-Way's accelerated motion to generate spacetime distortions.
-The Dupliter, acting as a gravitational anchor, could
-mediate these effects, creating a gateway
-for traversing nonlinear timelines.
+/* --- DUPLITER TEXT WITH PROPER SPACING --- */
+const dupliterText = `What is the Dupliter?
+
+This Dupliter is a speculative framework for stabilizing nonlinear time travel through gravitational interactions with a theoretical duplicate of Jupiter. The hypothesis posits that temporal displacement becomes feasible when dark matter potential energy in galactic halo outskirts is harnessed, enabling the Milky Way's accelerated motion to generate spacetime distortions. The Dupliter, acting as a gravitational anchor, could mediate these effects, creating a gateway for traversing nonlinear timelines.
 
 Theory
-This hypothesis proposes that as our Milky Way
-experience tiny accelerations due to gravitational
-forces from dark matter and stellar density the
-galaxy as a whole is also moving through space
-at high speeds, influenced by gravitational
-attractions such as those from the Great Attractor
-and Shapley Supercluster. However, these motions
-are not "continuous acceleration" in the sense
-of speeding up indefinitely; they
-are governed by gravitational dynamics.
 
-The Dupliter suggests that time travel could
-become feasible only after the dark matter potential
-energy in halo outskirts to attain a higher cosmic
-velocity, explaining why humanity
-has yet to achieve temporal displacement.
+This hypothesis proposes that as our Milky Way experience tiny accelerations due to gravitational forces from dark matter and stellar density the galaxy as a whole is also moving through space at high speeds, influenced by gravitational attractions such as those from the Great Attractor and Shapley Supercluster. However, these motions are not "continuous acceleration" in the sense of speeding up indefinitely; they are governed by gravitational dynamics.
+
+The Dupliter suggests that time travel could become feasible only after the dark matter potential energy in halo outskirts to attain a higher cosmic velocity, explaining why humanity has yet to achieve temporal displacement.
 
 The Dupliter Equation Interpretation
-The Dupliter equation is the textbook
-formula for comparing relativistic kinetic energy
-and, as of yet, contains no parameters
-related to dark matter, gravity, or Jupiter.
+
+The Dupliter equation is the textbook formula for comparing relativistic kinetic energy and, as of yet, contains no parameters related to dark matter, gravity, or Jupiter.
 `;
 
 /* --- INIT LETTER SPANS --- */
 const container = document.getElementById("container");
-const ball = document.getElementById("ball");
 let letters = [];
 
 dupliterText.split("").forEach(c => {
@@ -175,37 +166,36 @@ dupliterText.split("").forEach(c => {
   letters.push(span);
 });
 
-/* --- BALL REVEAL & LOOP --- */
+/* --- TEXT REVEAL ANIMATION --- */
 let idx = 0;
 const revealSpeed = 55;
 
-function animateBall() {
+function animateText() {
   if (idx >= letters.length) {
-    /* loop after a short pause */
+    /* reveal equation after text is done */
+    const eqElement = document.querySelector(".equation");
+    eqElement.classList.add("visible");
+    
+    /* loop after a pause */
     setTimeout(() => {
       letters.forEach(l => l.classList.remove("visible", "fading"));
+      const eqElement = document.querySelector(".equation");
+      eqElement.classList.remove("visible");
       idx = 0;
-      animateBall();
-    }, 1800);
+      animateText();
+    }, 3000);
     return;
   }
 
-  const t = letters[idx];
-  const rect = t.getBoundingClientRect();
-  const base = container.getBoundingClientRect();
-
-  ball.style.left = (rect.left - base.left) + "px";
-  ball.style.top = (rect.top - base.top - 22) + "px";
-
-  t.classList.add("visible");
+  letters[idx].classList.add("visible");
 
   if (idx > 10) letters[idx - 10].classList.add("fading");
 
   idx++;
-  setTimeout(animateBall, revealSpeed);
+  setTimeout(animateText, revealSpeed);
 }
 
-animateBall();
+animateText();
 </script>
 
 </body>
